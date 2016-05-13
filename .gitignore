@@ -1,0 +1,10 @@
+*.pyc
+EXP_RESULTS
+*.aux
+*.bbl
+*.bib.bak
+*.zip
+*.pkl
+*.blg
+*.o
+*.exe
