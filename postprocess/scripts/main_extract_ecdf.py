@@ -32,7 +32,7 @@ from epsilonindicator import compute_fast_incr_eps
 import ecdf
 
 
-def ecdf_extracting(isHV = True, isMean = True):
+def ecdf_extracting(isHV = True, isMean = True, data = []):
     """
     isHV: true to compute the hv-based data profile else the epsilon-based data profile
     isMean : true to compute the normalized data profile over multiple runs else the best artificial profile
@@ -54,10 +54,10 @@ def ecdf_extracting(isHV = True, isMean = True):
    
     if isHV:
       FILENAME_PROFILE_DATABASE = 'db_runprofiles_hypervolume.pkl'
-      FILENAME_ECDF_DATABASE = 'db_ecdfs_hv_3algos_maxfevalDiff_%druns_%dtargets.pkl'
+      FILENAME_ECDF_DATABASE = 'db_ecdfs_hv_maxfevalDiff_%druns_%dtargets.pkl'
     else:
       FILENAME_PROFILE_DATABASE = 'db_runprofiles_epsilon.pkl'
-      FILENAME_ECDF_DATABASE = 'db_ecdfs_eps_3algos_maxfevalDiff_%druns_%dtargets.pkl'     
+      FILENAME_ECDF_DATABASE = 'db_ecdfs_eps_maxfevalDiff_%druns_%dtargets.pkl'     
         
     readDatabase  = False  # set to False to avoid reading PKL and thus must process raw TXT data
     normalizedMOP = True
@@ -70,35 +70,36 @@ def ecdf_extracting(isHV = True, isMean = True):
     ROI_TXT_DIR = "../../problems/roi"
     #INDICATOR     = "hv"
     
-    data = []
-    data.append({
-        'name': "MO-SOO",
-        'algo': "MO-SOO",
-        'dir' : INPUT_TXT_DIR,
-        'nRun': 1,
-        'nFev': 1e3,
-    })
-    data.append({
-        'name': "MO-DIRECT",
-        'algo': "MO-DIRECT",
-        'dir' : INPUT_TXT_DIR,
-        'nRun': 1,
-        'nFev': 1e3,
-    })  
-    data.append({
-        'name': "HVMSO",
-        'algo': "HVMSO",
-        'dir' : INPUT_TXT_DIR,
-        'nRun': 1,
-        'nFev': 1e3,
-    }) 	
-    data.append({
-        'name': "pHVMSO",
-        'algo': "pHVMSO",
-        'dir' : INPUT_TXT_DIR,
-        'nRun': 1,
-        'nFev': 1e3,
-    }) 	
+    if data == None:
+		data = []
+		data.append({
+			'name': "MO-SOO",
+			'algo': "MO-SOO",
+			'dir' : INPUT_TXT_DIR,
+			'nRun': 1,
+			'nFev': 1e3,
+		})
+		data.append({
+			'name': "MO-DIRECT",
+			'algo': "MO-DIRECT",
+			'dir' : INPUT_TXT_DIR,
+			'nRun': 1,
+			'nFev': 1e3,
+		})  
+		data.append({
+			'name': "HVMSO",
+			'algo': "HVMSO",
+			'dir' : INPUT_TXT_DIR,
+			'nRun': 1,
+			'nFev': 1e3,
+		}) 	
+		data.append({
+			'name': "pHVMSO",
+			'algo': "pHVMSO",
+			'dir' : INPUT_TXT_DIR,
+			'nRun': 1,
+			'nFev': 1e3,
+		}) 	
     #==========================================================================
     objcol = 1
     timecol = 0

@@ -88,8 +88,8 @@ def ecdf_processing(isHV=True):
     else:
       indicator = 'eps'
       
-    FILENAME_ECDF_DATABASE = 'db_ecdfs_%s_3algos_maxfevalDiff_%druns_%dtargets.pkl'
-    suffix = "_3algos_%druns_aggregate" % (NUM_RUNS)
+    FILENAME_ECDF_DATABASE = 'db_ecdfs_%s_maxfevalDiff_%druns_%dtargets.pkl'
+    suffix = "_%druns_aggregate" % (NUM_RUNS)
     #==========================================================================
 
     
@@ -244,8 +244,8 @@ def ecdf_processing_alldims(isHV=True):
     else:
       indicator = 'eps'
       
-    FILENAME_ECDF_DATABASE = 'db_ecdfs_%s_3algos_maxfevalDiff_%druns_%dtargets_%dD.pkl'
-    suffix = "_3algos_%druns_alldims_aggregate" % (NUM_RUNS)
+    FILENAME_ECDF_DATABASE = 'db_ecdfs_%s_maxfevalDiff_%druns_%dtargets_%dD.pkl'
+    suffix = "_%druns_alldims_aggregate" % (NUM_RUNS)
     #==========================================================================
     
     fullRangeY    = True

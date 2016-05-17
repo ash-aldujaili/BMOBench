@@ -8,3 +8,8 @@ EXP_RESULTS
 *.blg
 *.o
 *.exe
+*.pdf
+*.log
+*.gz
+postprocess/
+*.tex~txs0

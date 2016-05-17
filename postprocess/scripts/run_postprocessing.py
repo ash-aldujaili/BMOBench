@@ -15,20 +15,32 @@ def main():
     # PUT YOUR SETTINGS HERE:
     data = []
     data.append({
-        'name': "MORANDOM",
-        'algo': "MORANDOM",
+        'name': "MODIRECT",
+        'algo': "MODIRECT",
         'dir' : "../../EXP_RESULTS",
         'nRun': 1,
         'nFev': 1e3,
     })
+    data.append({
+        'name': "MORANDOM",
+        'algo': "MORANDOM",
+        'dir' : "../../EXP_RESULTS",
+        'nRun': 10,
+        'nFev': 1e2,
+    })
     isHV = False
     # ================================================================
     
-    extract_ecdf.ecdf_extracting(isHV = isHV, isMean = True, data = data)
+    extract_ecdf.ecdf_extracting(isHV = isHV, isMean = False, data = data)
     plot_aggregated.main(isHV = isHV)
     plot_single.main(isHV = isHV)
     
-    
+    # move the aggregate data profiles to the paper template:
+    NUM_RUNS = 10
+    suffix = "_%druns_aggregate" % (NUM_RUNS)
+    DIR_SRC = "../" + "postproc" + "/" + "figs%s" % suffix
+    DIR_DST = "../" + "../" + "latex-template" + "/" + "data"
+    shutil.move(DIR_SRC, DIR_DST)
 if __name__ == "__main__":
     startTime = time.time()
     main()

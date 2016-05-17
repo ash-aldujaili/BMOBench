@@ -89,8 +89,8 @@ def ecdf_processing(isHV = True):
     else:
       indicator = 'eps'
       
-    FILENAME_ECDF_DATABASE = 'db_ecdfs_%s_3algos_maxfevalDiff_%druns_%dtargets.pkl'
-    suffix = "_3algos_%druns_single" % (NUM_RUNS)
+    FILENAME_ECDF_DATABASE = 'db_ecdfs_%s_maxfevalDiff_%druns_%dtargets.pkl'
+    suffix = "_%druns_single" % (NUM_RUNS)
     #==========================================================================
     
     fullRangeY    = True
