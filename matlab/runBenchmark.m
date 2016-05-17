@@ -47,7 +47,7 @@ end
 %% ======================================
 % USER CONFIGURATIONS - CHANGE HERE:
 EVAL_BUDGET_MULTIPLIER = 1000;% This value * DIM will be the evaluation budget for the corresponding problem
-ALGS = {'MORANDOM'};
+ALGS = {'MODIRECT'};
 NUM_RUNS = [1] ;% for each alg in ALGS
 %% ======================================
 

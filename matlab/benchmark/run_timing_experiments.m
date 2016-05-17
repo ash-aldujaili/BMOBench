@@ -21,7 +21,9 @@ for algIdx = 1 : numel(ALGS)
         %% ======================================
         tic;
         % populate the algorithms of your choice here
-        if strcmp(alg,'MORANDOM')
+        if strcmp(alg,'MODIRECT')
+            MODIRECT(benchmarkFunc,l' , u', numEvals, m);			
+        else if strcmp(alg,'MORANDOM')
             MORANDOM(benchmarkFunc,l' , u', numEvals, m);
         else
             error('no such algorithm');
