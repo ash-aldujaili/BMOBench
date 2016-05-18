@@ -70,7 +70,7 @@ Intentionally left blank by a $\backslash${\tt clearpage}, otherwise the first t
         
 
 
-def ecdf_processing(isHV=True):
+def ecdf_processing(ind = 'eps'):
     #====================================#
     # Read info from BBOB
     #====================================#
@@ -83,11 +83,6 @@ def ecdf_processing(isHV=True):
     NUM_TARGETS = 70
     
     #======= TO BE EDITED =====================================================
-    if isHV:
-      indicator = 'hv'
-    else:
-      indicator = 'eps'
-      
     FILENAME_ECDF_DATABASE = 'db_ecdfs_%s_maxfevalDiff_%druns_%dtargets.pkl'
     suffix = "_%druns_aggregate" % (NUM_RUNS)
     #==========================================================================
@@ -97,7 +92,7 @@ def ecdf_processing(isHV=True):
     compileLatex  = True
     compileLogx   = True
     
-    MAIN_TEX_FIGS = "plot_ecdf_%s%s.tex" % (indicator,suffix) # used to control the compilation of LaTeX
+    MAIN_TEX_FIGS = "plot_ecdf_%s%s.tex" % (ind,suffix) # used to control the compilation of LaTeX
     DIR_FIGS = "../" + "postproc" + "/" + "figs%s" % suffix
     DIR_TEX_FIGS = os.path.split(DIR_FIGS)[0] + "/" + "latex4figs%s" % suffix
     
@@ -112,7 +107,7 @@ def ecdf_processing(isHV=True):
     try: all_ecdfs
     except NameError:
         import pickle
-        f = open(FILENAME_ECDF_DATABASE % (indicator,NUM_RUNS, NUM_TARGETS), 'rb')
+        f = open(FILENAME_ECDF_DATABASE % (ind,NUM_RUNS, NUM_TARGETS), 'rb')
         all_ecdfs = pickle.load(f)
         f.close()
     #-------------------------------------------------------------------
@@ -159,7 +154,7 @@ def ecdf_processing(isHV=True):
         dims = [DIM_LIST[pid] for pid in groups[gid]]
         DIM = 1#least_common_multiple(*dims)
         #agg_ecdfs = ecdf.aggregate_ecdfs_2objs_bbob(all_ecdfs, g1func, g2func)
-        agg_ecdfs = ecdf.aggregate_ecdfs_problems(all_ecdfs, problems=groups[gid])
+        agg_ecdfs = ecdf.aggregate_ecdfs_problems(all_ecdfs, problems=groups[gid],dims= [DIM_LIST[id] for id in groups[gid]])
         #agg_ecdfs = ecdf.aggregate_ecdfs_2objs_bbob(all_ecdfs) # simply aggregates all ecdfs in the database
         
         print 'nprofiles:', agg_ecdfs[agg_ecdfs.keys()[0]]['nprofiles']
@@ -173,7 +168,7 @@ def ecdf_processing(isHV=True):
         
         # Modify x's such that we can display the x-axis as "# f-evals / DIM"
         for algo in ecdf_coord.keys():
-            ecdf_coord[algo]['x'] = [item/DIM for item in ecdf_coord[algo]['x']] #change for this
+            ecdf_coord[algo]['x'] = [item for item in ecdf_coord[algo]['x']] #change for this
             #ecdf_coord[algo]['x'] = [item for item in ecdf_coord[algo]['x']]
         #-------------------------------------------------------------------
         
@@ -182,7 +177,7 @@ def ecdf_processing(isHV=True):
         #pltObject.legends = [key[3:] for key in ecdf_coord.keys()]
         pltObject.legends = [key[3:].replace('MO-CMA-ES','MO-CMA') for key in ecdf_coord.keys()]
         #pltObject.xlabel = "# f-evals / DIM"
-        pltObject.xlabel = "# $\mathbf{f}$-evaluations"
+        pltObject.xlabel = "# $\mathbf{f}$-evaluations / dimension"
         pltObject.ylabel = "Proportion of (function+target)"
         #pltObject.title = u"%s (F1) & %s (F2), %dD" % (g1name, g2name, DIM)
         pltObject.title = ""
@@ -190,15 +185,15 @@ def ecdf_processing(isHV=True):
         
         # Construct output filenames
         fname = "%s_%druns" % (gid, NUM_RUNS)
-        fnameEcdf     = fname + "_ecdf_%s.pdf" % indicator
-        fnameEcdfLogx = fname + "_ecdf_%s_logx.pdf" % indicator
+        fnameEcdf     = fname + "_ecdf_%s.pdf" % ind
+        fnameEcdfLogx = fname + "_ecdf_%s_logx.pdf" % ind
         
         # Plot to the PDF files
         #pltObject.plotting(DIR_FIGS + "/" + fnameEcdf,     ecdf_coord, xstart=startFevLim/DIM, logx=False, yfull=fullRangeY)
         #if ig1 == 0:
         #  print("Plotting all")
         #pltObject.plotting(DIR_FIGS + "/" + fnameEcdfLogx, ecdf_coord, xstart=startFevLim/DIM, logx=True,  yfull=fullRangeY)
-        pltObject.plotting(DIR_FIGS + "/" + fnameEcdfLogx, ecdf_coord, xstart=startFevLim/DIM, logx=True,  yfull=fullRangeY)
+        pltObject.plotting(DIR_FIGS + "/" + fnameEcdfLogx, ecdf_coord, xstart=startFevLim, logx=True,  yfull=fullRangeY)
         #-------------------------------------------------------------------
         
 
@@ -227,7 +222,127 @@ def ecdf_processing(isHV=True):
         texify.pdfLatex(directory=DIR_TEX_FIGS, filename=MAIN_TEX_FIGS, cleanup=[".log", ".aux"])
 
 
-def ecdf_processing_alldims(isHV=True):
+def ecdf_processing_allindicators(indicators = ['eps', 'gd','igd']):
+    '''
+        aggregate and plots ecdfs over all the problems and all the indicators into a single plot
+    '''
+    #====================================#
+    # Read info from BBOB
+    #====================================#
+    PROBLEM_LIST = ['BK1','ex005','Deb41','Deb512a','Deb512b','Deb512c','Deb513','Deb521a','Deb521b','Deb53','ZDT1','ZDT2','ZDT3','ZDT4','ZDT6','DTLZ1','DTLZ2','DTLZ3','DTLZ4','DTLZ5','DTLZ6','DTLZ1n2','DTLZ2n2','DTLZ3n2','DTLZ4n2','DTLZ5n2','DTLZ6n2','Kursawe','Fonseca','L1ZDT4','L2ZDT1','L2ZDT2','L2ZDT3','L2ZDT4','L2ZDT6','L3ZDT1','L3ZDT2','L3ZDT3','L3ZDT4','L3ZDT6','WFG1','WFG2','WFG3','WFG4','WFG5','WFG6','WFG7','WFG8','WFG9','I1','I2','I3','I4','I5','MOP1','MOP2','MOP3','MOP4','MOP5','MOP6','MOP7','DPAM1','DG01','Far1','FES1','FES2','FES3','IKK1','Jin1','Jin2','Jin3','Jin4','OKA1','OKA2','LRS1','IM1','LE1','MHHM1','MHHM2','MLF1','MLF2','QV1','Sch1','SP1','SSFYY1','SSFYY2','SK1','SK2','TKLY1','VU1','VU2','VFM1','ZLT1','CL1','lovison1','lovison2','lovison3','lovison4','lovison5','lovison6']
+    DIM_LIST = [2,2,2,2,2,2,2,2,2,2,30,30,30,10,10,7,12,12,12,12,22,2,2,2,2,2,2,3,2,10,30,30,30,30,10,30,30,30,30,10,8,8,8,8,8,8,8,8,8,8,8,8,8,8,1,4,2,3,2,2,2,10,1,2,10,10,10,2,2,2,2,2,2,3,2,2,2,1,2,1,2,10,1,2,2,1,1,4,4,2,2,2,10,4,2,2,2,2,3,3]
+
+    #xlim = [-5, 5]
+    #INST_LIST = ((2,4), (3,5), (7,8), (9,10), (11,12))
+    NUM_RUNS = 10
+    NUM_TARGETS = 70
+    
+    #======= TO BE EDITED =====================================================
+    FILENAME_ECDF_DATABASE = 'db_ecdfs_%s_maxfevalDiff_%druns_%dtargets.pkl'
+    suffix = "_%druns_aggregate" % (NUM_RUNS)
+    #==========================================================================
+
+    
+    fullRangeY    = True
+    compileLatex  = True
+    compileLogx   = True
+    
+    MAIN_TEX_FIGS = "plot_ecdf_allind%s.tex" % (suffix) # used to control the compilation of LaTeX
+    DIR_FIGS = "../" + "postproc" + "/" + "figs%s" % suffix
+    DIR_TEX_FIGS = os.path.split(DIR_FIGS)[0] + "/" + "latex4figs%s" % suffix
+    
+    # Check the existence of output folders
+    if not os.path.isdir(DIR_FIGS): os.makedirs(DIR_FIGS)
+    if not os.path.isdir(DIR_TEX_FIGS): os.makedirs(DIR_TEX_FIGS)
+    
+    ftex_main_figs_pdf = composeLatex(cmd='init', file=DIR_TEX_FIGS + "/" + MAIN_TEX_FIGS)
+    
+    #-------------------------------------------------------------------
+    # Read the database dictionary back from the pickle
+    try: all_ecdfs
+    except NameError:
+        import pickle
+        list_of_ecdfs_dbs = []
+        for ind in indicators:
+            f = open(FILENAME_ECDF_DATABASE % (ind,NUM_RUNS, NUM_TARGETS), 'rb')
+            #temp = ecdf.aggregate_ecdfs_problems(pickle.load(f))
+            list_of_ecdfs_dbs.append(ecdf.aggregate_ecdfs_problems(pickle.load(f), problems=np.arange(0,len(PROBLEM_LIST)), dims= DIM_LIST))
+            f.close()
+    #-------------------------------------------------------------------
+    # TO DO: this is a work around by double processing the databased first across all the problems as above then across all indicators as shown below (processing one profile set per indicator hence the [0])
+    # aggregate the data profiles:
+    agg_ecdfs = ecdf.aggregate_ecdfs_across_indicators_problems(list_of_ecdfs_dbs, problems = [0])      
+
+    # plot the single profile 
+    DIM = 1#least_common_multiple(*dims)
+    #agg_ecdfs = ecdf.aggregate_ecdfs_problems(all_ecdfs)
+    
+        
+    print 'nprofiles:', agg_ecdfs[agg_ecdfs.keys()[0]]['nprofiles']
+    print 'ndata:', len(agg_ecdfs[agg_ecdfs.keys()[0]]['data'])
+    print '================================================'
+    
+    # Adjust the ecdf data such that we can plot from ${startFevPlot}
+    startFevPlot = -1  # DIM - 1
+    startFevLim  = 1
+    ecdf_coord = ecdf.extract_plot_data(agg_ecdfs, startFevPlot)
+    
+    # Modify x's such that we can display the x-axis as "# f-evals / DIM"
+    for algo in ecdf_coord.keys():
+        ecdf_coord[algo]['x'] = [item for item in ecdf_coord[algo]['x']] #change for this
+        #ecdf_coord[algo]['x'] = [item for item in ecdf_coord[algo]['x']]
+    #-------------------------------------------------------------------
+    
+    # Plot commands start here
+    pltObject = plottingConfig() # configure the plot
+    #pltObject.legends = [key[3:] for key in ecdf_coord.keys()]
+    pltObject.legends = [key[3:].replace('MO-CMA-ES','MO-CMA') for key in ecdf_coord.keys()]
+    #pltObject.xlabel = "# f-evals / DIM"
+    pltObject.xlabel = "# $\mathbf{f}$-evaluations"
+    pltObject.ylabel = "Proportion of (function+target)"
+    #pltObject.title = u"%s (F1) & %s (F2), %dD" % (g1name, g2name, DIM)
+    pltObject.title = "All Indicators"
+    pltObject.note = ["all"]
+    
+    # Construct output filenames
+    fname = "all_%druns" % (NUM_RUNS)
+    fnameEcdf     = fname + "_ecdf_allind.pdf"
+    fnameEcdfLogx = fname + "_ecdf_allind_logx.pdf"
+    
+    # Plot to the PDF files
+    #pltObject.plotting(DIR_FIGS + "/" + fnameEcdf,     ecdf_coord, xstart=startFevLim/DIM, logx=False, yfull=fullRangeY)
+    #if ig1 == 0:
+    #  print("Plotting all")
+    #pltObject.plotting(DIR_FIGS + "/" + fnameEcdfLogx, ecdf_coord, xstart=startFevLim/DIM, logx=True,  yfull=fullRangeY)
+    pltObject.plotting(DIR_FIGS + "/" + fnameEcdfLogx, ecdf_coord, xstart=startFevLim, logx=True,  yfull=fullRangeY)
+    #-------------------------------------------------------------------
+    
+
+    # MPI stuff
+    #MPI.COMM_WORLD.Barrier()
+    
+    # Define a layout of PDFs and include them in TeX file
+    try: name_buf
+    except NameError:
+        name_buf = []
+    name_buf = name_buf + ([fnameEcdfLogx] if compileLogx else [fnameEcdf])
+    
+    if len(name_buf) == 4:
+            composeLatex(cmd='add', file=ftex_main_figs_pdf,
+                        stringlist=["../" + os.path.split(DIR_FIGS)[1] + "/" + name_buf[0],
+                                    "../" + os.path.split(DIR_FIGS)[1] + "/" + name_buf[1],
+                                    "../" + os.path.split(DIR_FIGS)[1] + "/" + name_buf[2],
+                                    "../" + os.path.split(DIR_FIGS)[1] + "/" + name_buf[3]])
+            name_buf = []
+    #-------------------------------------------------------------------
+    
+    composeLatex(cmd='fini', file=ftex_main_figs_pdf)
+    
+    # Compile the main LaTeX file to PDF
+    if compileLatex:
+        texify.pdfLatex(directory=DIR_TEX_FIGS, filename=MAIN_TEX_FIGS, cleanup=[".log", ".aux"])
+
+def ecdf_processing_alldims(ind='eps'):
     #====================================#
     # Read info from BBOB
     #====================================#
@@ -239,11 +354,6 @@ def ecdf_processing_alldims(isHV=True):
     NUM_RUNS = 10
     
     #======= TO BE EDITED =====================================================
-    if isHV:
-      indicator = 'hv'
-    else:
-      indicator = 'eps'
-      
     FILENAME_ECDF_DATABASE = 'db_ecdfs_%s_maxfevalDiff_%druns_%dtargets_%dD.pkl'
     suffix = "_%druns_alldims_aggregate" % (NUM_RUNS)
     #==========================================================================
@@ -252,7 +362,7 @@ def ecdf_processing_alldims(isHV=True):
     compileLatex  = True
     compileLogx   = True
     
-    MAIN_TEX_FIGS = "plot_ecdf_%s%s.tex" % (indicator,suffix) # used to control the compilation of LaTeX
+    MAIN_TEX_FIGS = "plot_ecdf_%s%s.tex" % (ind,suffix) # used to control the compilation of LaTeX
     DIR_FIGS = "../" + "postproc" + "/" + "figs%s" % suffix
     DIR_TEX_FIGS = os.path.split(DIR_FIGS)[0] + "/" + "latex4figs%s" % suffix
     
@@ -269,7 +379,7 @@ def ecdf_processing_alldims(isHV=True):
         list_of_ecdfs_dbs = []
         import pickle
         for d in dims:
-          f = open(FILENAME_ECDF_DATABASE % (indicator,NUM_RUNS, 70, d), 'rb')
+          f = open(FILENAME_ECDF_DATABASE % (ind,NUM_RUNS, 70, d), 'rb')
           list_of_ecdfs_dbs.append(pickle.load(f))
           f.close()
     all_ecdfs, _ = ecdf.aggregate_ecdfs_across_dimensions_2objs_bbob(list_of_ecdfs_dbs, dims=[2,3,5,10,20])
@@ -347,8 +457,8 @@ def ecdf_processing_alldims(isHV=True):
             
             # Construct output filenames
             fname = "f%d--f%d_vs_f%d--f%d_%dD_%dinsts_%druns" % (g1func[0], g1func[-1], g2func[0], g2func[-1], DIM, len(INST_LIST), NUM_RUNS)
-            fnameEcdf     = fname + "_ecdf_%s.pdf" % indicator
-            fnameEcdfLogx = fname + "_ecdf_%s_logx.pdf" % indicator
+            fnameEcdf     = fname + "_ecdf_%s.pdf" % ind
+            fnameEcdfLogx = fname + "_ecdf_%s_logx.pdf" % ind
             
             # Plot to the PDF files
             #pltObject.plotting(DIR_FIGS + "/" + fnameEcdf,     ecdf_coord, xstart=startFevLim/DIM, logx=False, yfull=fullRangeY)
@@ -402,7 +512,7 @@ def plottingConfig():
     return pltObject
 
 
-def main(isHV= True):
+def main(ind = 'eps'):
     #dims = [2,3,5,10,20]
     #isHV = False
     #ecdf_processing_alldims()
@@ -413,24 +523,17 @@ def main(isHV= True):
     
     #for idx, d in enumerate(dims):
     #  if idx % nproc == iproc:
-    ecdf_processing(isHV = isHV)
-        
+    ecdf_processing(ind = ind)
+    ecdf_processing_allindicators()    
     #MPI.COMM_WORLD.Barrier()
 
 
 if __name__ == "__main__":
     startTime = time.time()
     if len(sys.argv) > 1:
-      if sys.argv[1].isdigit():
-        if int(sys.argv[1]):
-          main(isHV= True)
-        else:
-          main(isHV = False)
-      else:
-        print "The script argument should a digit 0/1: 0 for HV, 1 for eps, doing for eps"
-        main(isHV = False)
+      main(ind = sys.argv[1])
     else:
-      main()
+      print "syntax: python main_plot_aggregated_ecdf.py hv|eps|gd|igd"
     print "It took:", time.time() - startTime, "seconds."
     print "Done." 
     # print "Press Enter to continue ..." 

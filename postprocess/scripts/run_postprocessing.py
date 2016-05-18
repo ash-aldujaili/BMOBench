@@ -28,18 +28,21 @@ def main():
         'nRun': 10,
         'nFev': 1e2,
     })
-    isHV = False
+	# use one or more of the following indicators: ['eps', 'gd', 'igd', 'hv']
+    indicators = ['eps','gd','igd']
     # ================================================================
-    
-    extract_ecdf.ecdf_extracting(isHV = isHV, isMean = False, data = data)
-    plot_aggregated.main(isHV = isHV)
-    plot_single.main(isHV = isHV)
+    for ind in indicators:
+        extract_ecdf.ecdf_extracting(ind = ind, isMean = False, data = data)
+        plot_aggregated.main(ind = ind)
+        plot_single.main(ind = ind)
     
     # move the aggregate data profiles to the paper template:
     NUM_RUNS = 10
     suffix = "_%druns_aggregate" % (NUM_RUNS)
     DIR_SRC = "../" + "postproc" + "/" + "figs%s" % suffix
-    DIR_DST = "../" + "../" + "latex-template" + "/" + "data"
+    DIR_DST = "../" + "../" + "latex-template" + "/" + "performance-data"
+    if os.path.exists(DIR_DST):
+        os.remove(DIR_DST)
     shutil.move(DIR_SRC, DIR_DST)
 if __name__ == "__main__":
     startTime = time.time()

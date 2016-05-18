@@ -140,6 +140,8 @@ def compute_single_algo(run_profiles, targets, rawECDFs=None, isMean = True):
     if not isHit:
       rawECDFs['data'].append({'at'   : 0,'nhits': 0})
       rawECDFs['data'].append({'at'   : 1,'nhits': 0})
+    elif len(rawECDFs['data']) < 2 and rawECDFs['data'][0]['at'] != 1: # for the next postprocessing step
+      rawECDFs['data'].append({'at'   : 1,'nhits': 0})
       
     #if (len(rawECDFs['data'])==0):
     #    print(len(rawECDFs['data']))
@@ -460,9 +462,9 @@ def aggregate_ecdfs_across_databases_2objs_bbob(list_of_ecdfs_dbs):
 
 
 
-def aggregate_ecdfs_problems(ecdfs_db, problems=None):
+def aggregate_ecdfs_problems(ecdfs_db, problems=None, dims=[]):
     """
-    Aggregate ECDFs within ONE database indicated by the lists problems.
+    Aggregate ECDFs within ONE database indicated by the lists problems whose dimensions are att.
     Return: a dictionary with similar structure to ecdfs_db or so.
     """
     # According to the current bi-objective BBOB setup, f2 starts from f1 onwards,
@@ -476,6 +478,7 @@ def aggregate_ecdfs_problems(ecdfs_db, problems=None):
     #               4: {6: True, 7: True, 8: True},
     #               6: {6: True, 7: True, 8: True}}
     if problems is None: # use all possible combinations
+        # TODO this is not working perfectly needs to be rectified
         mop = {}
         for pidx in ecdfs_db.keys():
             if isinstance(pidx, int): # since there is a key 'targets' out there!
@@ -489,15 +492,17 @@ def aggregate_ecdfs_problems(ecdfs_db, problems=None):
     
     # Initialize the output by copying an existing data structure
     pid0 = mop.keys()[0]
+    alg0 = ecdfs_db[pid0].keys()[0]
     import copy
     result = copy.deepcopy(ecdfs_db[pid0]) # CAUTION: assignment does not make a copy!!!
-    # here the 'targets' entry is dropped out.
-    
+
+    # TODO currently the scaling of the evaluations is down
+    dim_lcm = 1 # least_common_multiple(*dims)
     # Way to go: for each algorithm, do the aggregation over the specified groups of functions
     for algo in ecdfs_db[pid0].keys():
         number_of_profiles = 0
         all_hitting_times = []
-        for pidx in mop.keys():
+        for pid, pidx in enumerate(mop.keys()):
             #print(f1,f2)
             #if f1 == 9 and f2 == 9:
             #    print("Hi");
@@ -506,6 +511,12 @@ def aggregate_ecdfs_problems(ecdfs_db, problems=None):
             except:
                 print "ECDF of %d does not exist, I ignore it" % (pidx)
                 continue # simply ignore this combination
+            # scale the evaluations
+            # TODO with lcm use the next block but it is not suitable overflowing 
+            #multiple = int(dim_lcm/dims[pid])
+            #ecdfs_db[pidx][algo]['nfevs'] *= multiple
+            #for i in xrange(len(ecdfs_db[pidx][algo]['data'])):
+            #    ecdfs_db[pidx][algo]['data'][i]['at'] *= multiple            
             # Deal with the entry 'ntargets'
             if result[algo]['ntargets'] != ecdfs_db[pidx][algo]['ntargets']:
                 print "You are aggregating ecdfs of different 'ntargets', which is not yet supported by this routine!"
@@ -572,9 +583,120 @@ def aggregate_ecdfs_problems(ecdfs_db, problems=None):
     return result
 
 
+def aggregate_ecdfs_across_databases_problems(list_of_ecdfs_dbs, problems = None):
+    """
+    Aggregate the *common* ECDFs across multiple databases.
+    Abort those ECDFs that do not exist over all input databases.
+    Return: a dictionary with similar structure to ecdfs_db[1][2] or so.
+    """
+    # TODO current implementation assume each of the dbs is aggregated into a single profile that is mop.keys() are irrelevant here
+    if problems is None: # use all possible combinations
+        # TODO this is not working perfectly needs to be rectified
+        mop = {}
+        for pidx in list_of_ecdfs_dbs[0].keys():
+            if isinstance(pidx, int): # since there is a key 'targets' out there!
+                mop[pidx] = True # or: mop.update(f1: {})
+                #for f2 in ecdfs_db[f1].keys():
+                #    mop[f1][f2] = True # or: mop[f1].update(f2: True)
+    else: # use those indicated
+        mop = {}
+        for pidx in problems:
+            mop[pidx] = True
+    
+    # Initialize the output ecdfs database by copying an existing data structure
+    pid0 = mop.keys()[0]
+    import copy
+    result = copy.deepcopy(list_of_ecdfs_dbs[0]) # CAUTION: assignment does not make a copy!!!
+    
+    # Way to go: for each algorithm, do the aggregation over the specified groups of functions
+    for algo in list_of_ecdfs_dbs[0].keys():
+        number_of_profiles = 0
+        all_hitting_times = []
+        # TODO currently each element in the list of dbs is a single dataprofile not a dict of data profiles hence mop.keys() are of no use here
+        #for pidx in mop.keys():
+        #    #print(f1,f2)
+        #    #if f1 == 9 and f2 == 9:
+        #    #    print("Hi");
+        #    # Check the existence of this combination:
+        for ecdfs_db in list_of_ecdfs_dbs:
+            if result[algo]['ntargets'] != ecdfs_db[algo]['ntargets']:
+                print "You are aggregating ecdfs of different 'ntargets', which is not yet supported by this routine!"
+                quit()
+            # Deal with the entry 'nfevs'
+            if result[algo]['nfevs'] < ecdfs_db[algo]['nfevs']:
+                result[algo]['nfevs'] = ecdfs_db[algo]['nfevs']
+            # Cumulate the entries 'nprofiles' and 'data'
+            number_of_profiles += ecdfs_db[algo]['nprofiles']
+            all_hitting_times = all_hitting_times + ecdfs_db[algo]['data']
+        
+        result[algo]['nprofiles'] = number_of_profiles
+        result[algo]['data'] = sorted(all_hitting_times, key = lambda point: point['at'])
+        
+        # Remove the multiplicity of the added datum {'at'   : rawECDFs['nfevs'],
+        #                                             'nhits': np.nan}
+        # buggy condition does not remove all the nans
+        # while np.isnan(result[algo]['data'][-1]['nhits']) and \
+        #       np.isnan(result[algo]['data'][-2]['nhits']) and \
+        #       result[algo]['data'][-2]['at'] == result[algo]['data'][-2]['at']:
+        #     del result[algo]['data'][-1]
+        # rectified code : filter the nans
+        
+        where_n_fevs = np.where(np.array([x['at'] for x in result[algo]['data']])==result[algo]['nfevs'])[0]
+        nhits_at_fevs = [result[algo]['data'][id]['nhits'] for id in where_n_fevs]
+        where_nan = np.where(np.isnan(nhits_at_fevs))[0]
+        
+        #print(where_nan)
+        if len(where_nan) == 0:
+            pass
+        elif len(where_nan) < len(nhits_at_fevs):# delete all nan
+            
+            for id in where_nan[::-1]:
+                #print("Shape of data %d" % len(result[algo]['data']))
+                #print("Idx removed %d" % where_n_fevs[id])
+                del result[algo]['data'][where_n_fevs[id]]
+        elif len(where_nan) == len(nhits_at_fevs): # keep one nan
+            for id in where_nan[::-1]:
+                del result[algo]['data'][where_n_fevs[id]]
+        else:
+            print("There are nans other than the end of the profile, this shouldnt happen !!")
+            where_nan[0][0][0]
+            
+        
+        where_n_fevs = np.where(np.array([x['at'] for x in result[algo]['data']])!=result[algo]['nfevs'])[0]
+        nhits_at_fevs = [result[algo]['data'][id]['nhits'] for id in where_n_fevs]
+        where_nan = np.where(np.isnan(nhits_at_fevs))[0]        
+        
+        
+        if len(where_nan) == 0:
+            pass
+        else:
+            for id in where_nan[::-1]:
+                #print("Shape of data %d" % len(result[algo]['data']))
+                #print("Idx removed %d" % where_n_fevs[id])
+                del result[algo]['data'][where_n_fevs[id]]
 
 
+        
+        # dict is mutable, thus passed by reference, no need of return
+        # i.e. no more: result[algo].update(induce_proportion_single_algo(result[algo]))
+        induce_proportion_single_algo(result[algo])
+    
+    return result
 
+def aggregate_ecdfs_across_indicators_problems(list_of_ecdfs_dbs, problems = None, dims=[]):
+    """
+    Inputs are a list of ECDFs database
+    """
+    # Make copies of input databases
+    import copy
+    databases = []
+    for db in list_of_ecdfs_dbs:
+        databases.append(copy.deepcopy(db))
+           
+    # Now ready for the aggregation across the databases
+    agg_database = aggregate_ecdfs_across_databases_problems(databases, problems = problems)
+    
+    return agg_database
 
 
 

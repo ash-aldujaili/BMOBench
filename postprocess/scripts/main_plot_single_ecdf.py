@@ -71,7 +71,7 @@ Intentionally left blank by a $\backslash${\tt clearpage}, otherwise the first t
         
 
 
-def ecdf_processing(isHV = True):
+def ecdf_processing(ind = 'eps'):
     #====================================#
     # Read info from BBOB
     #====================================#
@@ -83,12 +83,7 @@ def ecdf_processing(isHV = True):
     #INST_LIST = ((2,4), (3,5), (7,8), (9,10), (11,12))
     NUM_RUNS = 10
     NUM_TARGETS = 70
-    #======= TO BE EDITED =====================================================
-    if isHV:
-      indicator = 'hv'
-    else:
-      indicator = 'eps'
-      
+    #======= TO BE EDITED =====================================================      
     FILENAME_ECDF_DATABASE = 'db_ecdfs_%s_maxfevalDiff_%druns_%dtargets.pkl'
     suffix = "_%druns_single" % (NUM_RUNS)
     #==========================================================================
@@ -97,7 +92,7 @@ def ecdf_processing(isHV = True):
     compileLatex  = True
     showLogOnly   = True
     
-    MAIN_TEX_FIGS = "plot_ecdf_%s%s.tex" % (indicator,suffix) # used to control the compilation of LaTeX
+    MAIN_TEX_FIGS = "plot_ecdf_%s%s.tex" % (ind,suffix) # used to control the compilation of LaTeX
     DIR_FIGS = "../" + "postproc" + "/" + "figs%s" % suffix
     DIR_TEX_FIGS = os.path.split(DIR_FIGS)[0] + "/" + "latex4figs%s" % suffix
     
@@ -112,7 +107,7 @@ def ecdf_processing(isHV = True):
     try: all_ecdfs
     except NameError:
         import pickle
-        f = open(FILENAME_ECDF_DATABASE % (indicator,NUM_RUNS, NUM_TARGETS), 'rb')
+        f = open(FILENAME_ECDF_DATABASE % (ind,NUM_RUNS, NUM_TARGETS), 'rb')
         all_ecdfs = pickle.load(f)
         f.close()
     #-------------------------------------------------------------------
@@ -140,13 +135,13 @@ def ecdf_processing(isHV = True):
         print '================================================'
         
         # Adjust the ecdf data such that we can plot from ${startFevPlot}
-        startFevPlot = 10*DIM - 1  # DIM - 1
-        startFevLim  = 10*DIM
+        startFevPlot = 1 # DIM - 1
+        startFevLim  = 1
         ecdf_coord = ecdf.extract_plot_data(all_ecdfs[pidx], startFevPlot)
         
         # Modify x's such that we can display the x-axis as "# f-evals / DIM"
         for algo in ecdf_coord.keys():
-            ecdf_coord[algo]['x'] = [item/DIM for item in ecdf_coord[algo]['x']]
+            ecdf_coord[algo]['x'] = [item for item in ecdf_coord[algo]['x']]
         #-------------------------------------------------------------------
         
         # Load algorithm run information
@@ -169,12 +164,12 @@ def ecdf_processing(isHV = True):
         fname = "%s_%dD_%s_%druns" % \
                 (pid, DIM, "3algos", info[0]['nRun'])
         fname = fname.replace(".", "-")
-        fnameEcdf     = fname + "_ecdf_%s.pdf" % indicator
-        fnameEcdfLogx = fname + "_ecdf_%s_logx.pdf" % indicator
+        fnameEcdf     = fname + "_ecdf_%s.pdf" % ind
+        fnameEcdfLogx = fname + "_ecdf_%s_logx.pdf" % ind
         
         # Plot to the PDF files
         #pltObject.plotting(DIR_FIGS + "/" + fnameEcdf,     ecdf_coord, xstart=startFevLim/DIM, logx=False, yfull=fullRangeY)
-        pltObject.plotting(DIR_FIGS + "/" + fnameEcdfLogx, ecdf_coord, xstart=startFevLim/DIM, logx=True,  yfull=fullRangeY)
+        pltObject.plotting(DIR_FIGS + "/" + fnameEcdfLogx, ecdf_coord, xstart=startFevLim, logx=True,  yfull=fullRangeY)
         #-------------------------------------------------------------------
         
         # Define a layout of PDFs and include them in TeX file
@@ -229,7 +224,7 @@ def plottingConfig():
     return pltObject
 
 
-def main(isHV= True):
+def main(ind= 'eps'):
     #dims = [2,3,5,10,20]
     #isHV = False
     #ecdf_processing_alldims()
@@ -239,7 +234,7 @@ def main(isHV= True):
     
     #for idx, d in enumerate(dims):
     #  if idx % nproc == iproc:
-    ecdf_processing( isHV = isHV)
+    ecdf_processing(ind = ind)
         
     #MPI.COMM_WORLD.Barrier()
 
@@ -247,16 +242,9 @@ def main(isHV= True):
 if __name__ == "__main__":
     startTime = time.time()
     if len(sys.argv) > 1:
-      if sys.argv[1].isdigit():
-        if int(sys.argv[1]):
-          main(isHV= True)
-        else:
-          main(isHV = False)
-      else:
-        print "The script argument should a digit 0/1: 0 for HV, 1 for eps, doing for eps"
-        main(isHV = False)
+      main(ind = sys.argv[1])
     else:
-      main()
+      print "syntax: python main_plot_single_ecdf.py hv|eps|gd|igd"
     print "It took:", time.time() - startTime, "seconds."
     print "Done." 
     # print "Press Enter to continue ..." 
