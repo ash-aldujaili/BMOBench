@@ -4,50 +4,39 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>BMOBench by ash-aldujaili</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-dark.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
   <body>
-
-      <header>
-        <h1>BMOBench</h1>
-        <p>Black-Box Multi-Objective Optimization Benchmarking Platform</p>
-      </header>
-
-      <div id="banner">
-        <span id="logo"></span>
-
-        <a href="https://github.com/ash-aldujaili/BMOBench" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/ash-aldujaili/BMOBench/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/ash-aldujaili/BMOBench/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
-
     <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
-      <section>
-        <p>In this platform, we address the <strong>Multi-objective Optimization Problem</strong>:</p>
+      <header>
+        <h1 class="header">BMOBench</h1>
+        <p class="header">Black-Box Multi-Objective Optimization Benchmarking Platform</p>
 
-<p><img src="https://raw.githubusercontent.com/ash-aldujaili/BMOBench/gh-pages/images/problem-def.PNG" alt=""></p>
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/ash-aldujaili/BMOBench/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/ash-aldujaili/BMOBench/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/ash-aldujaili/BMOBench">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/ash-aldujaili">ash-aldujaili</a></p>
+
+
+      </header>
+      <section>
+        <p>In this platform, we address <strong>multi-objective optimization(minimization) problem</strong>:</p>
 
 <p>Several algorithms/techniques have been proposed and studied to solve
 such problems. With this context, these algorithms are assessed in one
 of two ways, viz. theoretical, and empirical analysis. In theoretical
 analysis, a principled methodology is carried out to derive an
-analytical bound of the (run-time) solution quality. After $n$
+analytical bound of the (run-time) solution quality. After t
 evaluations/steps, the quality of the returned solution is evaluated by
 a loss/regret measure.</p>
 
@@ -56,7 +45,7 @@ the algorithm on complex problems, gaining an insight on the algorithm’s
 practicality/applicability on real-world problems. With this regard,
 most of the time, methods proposed to solve MOPs are benchmarked on a
 different set of problems under arbitrary budgets of function
-evaluation. We are interested in empirically assess published/novel
+evaluation. We are interested in empirically assessing published/novel
 multi-objective optimization algorithms in a unified (constantly
 updated) framework.</p>
 
@@ -69,12 +58,37 @@ algorithms by computing several quality indicators which are reported in
 terms of data profiles.</p>
 
 <h3>
-<a id="test-problems" class="anchor" href="#test-problems" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test Problems</h3>
+<a id="important-dates" class="anchor" href="#important-dates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>IMPORTANT DATES</h3>
 
-<p>The table below lists the 100 MOPs with a brief description
-of their properties.</p>
+<ul>
+<li>Paper Submission Deadline: <em>18 July 2016</em>
+</li>
+<li>Notification of Acceptance: <em>12 September 2016</em>
+</li>
+<li>Final Paper Submission Deadline: <em>10 October 2016</em>
+</li>
+</ul>
 
-<p><img src="https://raw.githubusercontent.com/ash-aldujaili/BMOBench/gh-pages/images/problems-table.PNG" alt=""></p>
+<h3>
+<a id="brief-description" class="anchor" href="#brief-description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Brief Description</h3>
+
+<ul>
+<li>For a brief description of the platform and its experimental setup, please refer to <a href="">this report</a>.</li>
+</ul>
+
+<h3>
+<a id="paper-submission" class="anchor" href="#paper-submission" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Paper Submission:</h3>
+
+<ul>
+<li>Please follow IEEE SSCI 2016 Submission Web Site (<a href="http://ssci2016.cs.surrey.ac.uk/Paper%20Submission.htm">http://ssci2016.cs.surrey.ac.uk/Paper%20Submission.htm</a>).</li>
+</ul>
+
+<h3>
+<a id="getting-started-with-bmobench" class="anchor" href="#getting-started-with-bmobench" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started with BMOBench</h3>
+
+<ul>
+<li>Please refer to the guidelines given <a href="https://github.com/ash-aldujaili/BMOBench">here</a>.</li>
+</ul>
 
 <h4>
 <a id="references" class="anchor" href="#references" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References</h4>
@@ -87,11 +101,10 @@ of their properties.</p>
 </ol>
       </section>
       <footer>
-        <p>Project maintained by <a href="https://github.com/ash-aldujaili">ash-aldujaili</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
+		
   </body>
 </html>
