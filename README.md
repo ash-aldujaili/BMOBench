@@ -39,14 +39,16 @@ To start with the *BMOBench* platform, download its code from `github`:
 ~~~
 >>python setup.py
 ~~~
-3. You are now ready to post-process your data.
+
 
 ## Post-Processing Data
 
 If you have already ran the `postprocess/scripts/setup.py`, you can generate the results as follow:
-1. From the system shell, `cd` to `postprocess/scripts`
-2. Edit the `data` dictionary within the main scripting file `run_postprocessing` to incorporate the benchmarked algorithms similar to the description of the exemplar algorithm, you may choose 
-3. 2. Execute the `run_postprocessing.py` python script. 
+1. From the system shell, `cd` to `postprocess/scripts`.
+
+2. Edit the `data` dictionary within the main scripting file `run_postprocessing` to incorporate the benchmarked algorithms similar to the description of the exemplar algorithm, you may choose among the available quality indicators to compare.
+
+3. Execute the `run_postprocessing.py` python script.  
 ~~~
 >>python run_postprocessing.py
 ~~~
