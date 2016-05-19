@@ -18,10 +18,10 @@ At this point of time, the platform is only supporting `MATLAB`. We are currentl
 To start with the *BMOBench* platform, download its code from `github`:
 * Download as [ZIP](https://github.com/ash-aldujaili/BMOBench/zipball/master)/ [TAR](https://github.com/ash-aldujaili/BMOBench/tarball/master)
 * Unzip(tar) the downloaded file to find the following folders: 
-⋅⋅* `problems`: problems-related files and descriptions
-⋅⋅* `postprocess`: for data post-processing
-⋅⋅* `matlab` : for running experiments in `MATLAB`
-⋅⋅* `latex-template`: paper template incorporating results generated from the post-processing step.
+  * `problems`: problems-related files and descriptions 
+  * `postprocess`: for data post-processing 
+  * `matlab` : for running experiments in `MATLAB` 
+  * `latex-template`: paper template incorporating results generated from the post-processing step.
 
 ## Running Experiments (MATLAB)
 1. Launch MATLAB and set your current path to the `matlab` directory 
