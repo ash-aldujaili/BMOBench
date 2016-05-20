@@ -332,6 +332,37 @@
 \hyphenation{op-tical net-works semi-conduc-tor}
 
 
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usetikzlibrary{positioning}
+\pgfplotscreateplotcyclelist{my black white}{%
+	solid, every mark/.append style={solid, fill=gray}, mark=*\\%
+	dotted, every mark/.append style={solid, fill=gray}, mark=square*\\%
+	densely dotted, every mark/.append style={solid, fill=gray}, mark=otimes*\\%
+	solid, every mark/.append style={solid, fill=gray}, mark=triangle*\\%
+	dashed, every mark/.append style={solid, fill=gray},mark=diamond*\\%
+	loosely dashed, every mark/.append style={solid, fill=gray},mark=*\\%
+	densely dashed, every mark/.append style={solid, fill=gray},mark=square*\\%
+	dashdotted, every mark/.append style={solid, fill=gray},mark=otimes*\\%
+	dasdotdotted, every mark/.append style={solid},mark=star\\%
+	densely dashdotted,every mark/.append style={solid, fill=gray},mark=diamond*\\%
+}
+
+\newcommand{\plotfile}[1]{
+	\pgfplotstableread{timing.txt}{\table}
+	\pgfplotstablegetcolsof{timing.txt}
+	\pgfmathtruncatemacro\numberofcols{\pgfplotsretval-1}
+	\pgfplotsinvokeforeach{1,...,\numberofcols}{
+		\pgfplotstablegetcolumnnamebyindex{##1}\of{\table}\to{\colname}
+		\addplot table [y index=##1] {timing.txt}; 
+		\addlegendentryexpanded{\texttt{\colname}}
+	}
+}
+
+
+
 
 
 \begin{document}
@@ -527,38 +558,24 @@ The abstract goes here.
 
 \section{Numerical Experiments}
 
-\subsection{Test Problems}
-
-%\input{fig/problem_def_tbl.tex}
-
-One-hundred multi-objective optimization problems from the literature are selected.\footnote{%collected by \cite{custodio2011direct} and 
-	retrieved from \url{ http://www.mat.uc.pt/dms}.} These problems have simple bound constraints, that is to say, $\mathcal{X}=[\myvec{l},\myvec{u}]\subset \mathbb{R}^n$, where $\myvec{u}\succeq\myvec{l}$. Table~\ref{tbl:problem_def} presents a brief list of these problems with number of dimensions/objectives. In order to have a better understanding of the algorithm strength/weakness, the benchmark problems are categorized (wherever possible) according to three key characteristics, namely \textit{dimensionality}: low- or high-dimension decision space, \textit{separability}: separable or non-separable objectives, and \textit{modality}: uni-modal or multi-modal objectives. Each of these attributes imposes a different challenge in solving an \textsc{MOO} problem~\cite{25_p}.
-
-\subsection{Compared Algorithms}
-
 \subsection{Setup}
 
-\subsection{Performance Evaluation Procedure}
+The numerical experiments are set up according to~\cite{bmobench-16}, where each algorithm is run on 100 multi-objective problems categorized over seven groups: low-dimensional, high-dimensional, uni-modal, multi-modal, and mixed categories.
 
+The procedure for assessing the solution quality of an algorithm is based on recording its \emph{runtime}: the number of function evaluations required by the algorithm for its solution to reach a specific (target) quality value. The recorded runtimes are then expressed in terms of data profiles, which capture various aspects of the algorithms' convergence behavior. For more details, one can refer to~\cite{bmobench-16}.
 
+%===============================================================================
+%                  Results generated from post-processing scripts
+%     This wont compile unless the plots are generated =========================
 \subsection{Results}
-
-
-\subsection{Empirical Runtime Evaluation}
-\label{sec:timing}
-
-
-In order to evaluate the complexity of the algorithms (measured in runtime), we have run the algorithms on a representative set of the problems.  The empirical complexity of an algorithm is then computed as the running time (in seconds) of the algorithm summed over all the problems given divided by the total number of function evaluations used. The results for four different evaluation budgets are shown in Figure~\ref{fig:timing}.
-
-\section{Conclusion}
-The conclusion goes here.
-
-\begin{figure}[!t]
-\centering
-\includegraphics[width=0.45\textwidth]{timing-data/timing.pdf}
-\caption{A $semi$-$\log$ plot visualizing the runtime per one function evaluation (in seconds) of the compared algorithms. All the algorithms were run on a selected set of problems over a set of evaluation budgets, namely BK1, DPAM1, L3ZDT1, DTLZ3, and FES3; with an evaluation budget $\in \{10, 100, 1000, 10000\}$
-	per problem on a PC with: 64-bit Windows 7, \ch{ Intel Xeon E5 CPU @ 3.20GHz,  16GB of memory.}}
-\label{fig:timing}
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{performance-data/all_10runs_ecdf_allind_logx.pdf}
+	\caption{Data profiles aggregated over all the problems across all
+		the quality indicators computed for each of the compared algorithms. The symbol × indicates the maximum number of function
+		evaluations.
+}
+	\label{fig:all_ind}
 \end{figure}
 
 
@@ -567,23 +584,93 @@ The conclusion goes here.
 \begin{figure*}[tb]
 	\begin{center}
 		\renewcommand{\arraystretch}{1.1}
-		\resizebox{\textwidth}{!}{
-\begin{tabular}{ccc}
-	\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/figs_10runs_aggregate/low-dimensioanl_10runs_ecdf_eps_logx.pdf}&
-	\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/figs_10runs_aggregate/high-dimensional_10runs_ecdf_eps_logx.pdf}&
-	\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/figs_10runs_aggregate/separable_10runs_ecdf_eps_logx.pdf}\\
-	\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/figs_10runs_aggregate/non-separable_10runs_ecdf_eps_logx.pdf}&
-	\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/figs_10runs_aggregate/uni-modal_10runs_ecdf_eps_logx.pdf}&
-		\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/figs_10runs_aggregate/multi-modal_10runs_ecdf_eps_logx.pdf}\\
-	\multicolumn{3}{c}{
-	\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/figs_10runs_aggregate/mixed_10runs_ecdf_eps_logx.pdf}
-	\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/figs_10runs_aggregate/all_10runs_ecdf_eps_logx.pdf}
-	}\\
-\end{tabular}}
-\end{center}
-\caption{}
-\label{fig:hv_agg_per_dim}		
-\end{figure*}
+		\resizebox{0.85\textwidth}{!}{
+			\begin{tabular}{cccc}
+				\toprule
+				\multicolumn{4}{c}{\textbf{Hypervolume} (HV)}\\
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/low-dimensioanl_10runs_ecdf_igd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/high-dimensional_10runs_ecdf_igd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/separable_10runs_ecdf_igd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/non-separable_10runs_ecdf_igd_logx.pdf}\\
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/uni-modal_10runs_ecdf_igd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/multi-modal_10runs_ecdf_igd_logx.pdf}&
+				%\multicolumn{3}{c}{
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/mixed_10runs_ecdf_igd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/all_10runs_ecdf_igd_logx.pdf}\\
+				\toprule
+				\multicolumn{4}{c}{\textbf{Additive Epsilon}}\\
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/low-dimensioanl_10runs_ecdf_eps_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/high-dimensional_10runs_ecdf_eps_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/separable_10runs_ecdf_eps_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/non-separable_10runs_ecdf_eps_logx.pdf}\\
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/uni-modal_10runs_ecdf_eps_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/multi-modal_10runs_ecdf_eps_logx.pdf}&
+				%\multicolumn{3}{c}{
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/mixed_10runs_ecdf_eps_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/all_10runs_ecdf_eps_logx.pdf}\\
+				\toprule
+				\multicolumn{4}{c}{\textbf{Generational Distance} (GD)}\\
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/low-dimensioanl_10runs_ecdf_gd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/high-dimensional_10runs_ecdf_gd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/separable_10runs_ecdf_gd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/non-separable_10runs_ecdf_gd_logx.pdf}\\
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/uni-modal_10runs_ecdf_gd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/multi-modal_10runs_ecdf_gd_logx.pdf}&
+				%\multicolumn{3}{c}{
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/mixed_10runs_ecdf_gd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/all_10runs_ecdf_gd_logx.pdf}\\
+				\toprule
+				\multicolumn{4}{c}{\textbf{Inverted Generational Distance} (IGD)}\\
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/low-dimensioanl_10runs_ecdf_igd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/high-dimensional_10runs_ecdf_igd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/separable_10runs_ecdf_igd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/non-separable_10runs_ecdf_igd_logx.pdf}\\
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/uni-modal_10runs_ecdf_igd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/multi-modal_10runs_ecdf_igd_logx.pdf}&
+				%\multicolumn{3}{c}{
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/mixed_10runs_ecdf_igd_logx.pdf}&
+				\includegraphics[width=7cm, trim = 0mm 0mm 0mm 0mm, clip]{performance-data/all_10runs_ecdf_igd_logx.pdf}\\
+				\bottomrule
+			\end{tabular}}
+		\end{center}
+		\caption{Data profiles aggregated over problem categories for each of the quality indicators computed. The symbol $\times$ indicates the maximum number of function
+			evaluations.
+}
+		\label{fig:dataprofiles_agg_per_dim}		
+	\end{figure*}
+	
+%===============================================================================
+
+\subsection{Empirical Runtime Evaluation}
+\label{sec:timing}
+
+
+In order to evaluate the complexity of the algorithms (measured in runtime), the algorithms are run on a representative set of the problems.  The empirical complexity of an algorithm is then computed as the running time (in seconds) of the algorithm summed over all the problems given divided by the total number of function evaluations used. The results for four different evaluation budgets are shown in Figure~\ref{fig:timing}.
+
+\section{Conclusion}
+The conclusion goes here.
+
+
+
+%===============================================================================
+\begin{figure}[!t]
+	\centering
+		\resizebox{0.45\textwidth}{!}{
+			\begin{tikzpicture}
+			\begin{axis}[xmode = log,
+			legend style ={ at={(1.03,1)}, 
+				anchor=north west, draw=black, 
+				fill=white,align=left},
+			cycle list name=my black white
+			,ylabel=\texttt{runtime/\textbf{f}-evaluation (seconds)}, xlabel=\texttt{\#\textbf{f}-evaluations}]
+			\plotfile{timing.txt}
+			\end{axis}
+			\end{tikzpicture}}
+\caption{A $semi$-$\log$ plot visualizing the runtime per one function evaluation (in seconds) of the compared algorithms. All the algorithms were run on a selected set of problems over a set of evaluation budgets, namely BK1, DPAM1, L3ZDT1, DTLZ3, and FES3; with an evaluation budget \ch{$\in \{10, 100, 1000, 10000\}$}
+	per problem on a PC with: 64-bit Windows 7, \ch{ Intel Xeon E5 CPU @ 3.20GHz,  16GB of memory.}}
+\label{fig:timing}
+\end{figure}
+%===============================================================================
 
 % use section* for acknowledgment
 \section*{Acknowledgment}
