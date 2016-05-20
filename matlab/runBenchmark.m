@@ -36,7 +36,7 @@ PROBLEMS = {'BK1';'ex005';'Deb41';'Deb512a';'Deb512b';'Deb512c';'Deb513';
 PROBLEMS_DIR = fullfile('..','problems');
 ALGS_DIR = 'algs';         
 EXP_DIR = fullfile('..','EXP_RESULTS');
-TIM_DIR = fullfile('..','latex-template','data');
+TIM_DIR = fullfile('..','latex-template');
 global nondomVectors;
 global nondomTime;
 global timeStamp;
@@ -46,10 +46,14 @@ end
 
 %% ======================================
 % USER CONFIGURATIONS - CHANGE HERE:
-EVAL_BUDGET_MULTIPLIER = [1000, 100];% This value * DIM will be the evaluation budget for the corresponding problem
-ALGS = {'MODIRECT', 'MORANDOM'};
-NUM_RUNS = [1, 10] ;% for each alg in ALGS
+
+ALGS = {'MODIRECT'};
+EVAL_BUDGET_MULTIPLIER = [1000];% This value * DIM will be the evaluation budget for the corresponding (problem,algorithm)
+NUM_RUNS = [1] ;% for each alg in ALGS
 %% ======================================
 
+
 run_performance_experiments
+run_hv_computation
 run_timing_experiments
+
