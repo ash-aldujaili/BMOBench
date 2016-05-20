@@ -24,9 +24,7 @@ for algIdx = 1 : numel(ALGS)
             %% ======================================
             % populate the algorithms of your choice here
             if strcmp(alg,'MODIRECT')
-                MODIRECT(benchmarkFunc,l' , u', numEvals, m);			
-            elseif strcmp(alg,'MORANDOM')
-                MORANDOM(benchmarkFunc,l' , u', numEvals, m);
+                MODIRECT(benchmarkFunc,l' , u', numEvals, m);	
             else
                 error('no such algorithm');
             end

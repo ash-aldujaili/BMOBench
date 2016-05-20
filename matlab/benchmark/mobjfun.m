@@ -38,8 +38,8 @@ timeStamp = timeStamp + 1;
 f = problemHandler(x);
 % decide to store or note
 if (recordPareto)
-    pf = paretofront([ nondomVectors; f]);
-    if pf(end)
+    %pf = paretofront([ nondomVectors; f]);
+    if isnondominated([ nondomVectors; f])%pf(end)
         nondomVectors(end+1,:) = f;
         nondomTime(end+1) = timeStamp;
     end

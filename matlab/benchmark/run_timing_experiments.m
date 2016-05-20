@@ -4,7 +4,7 @@
 % in the algorithm's original runtime.
 global timeStamp;
 disp('Recording timing results...')
-BUDGET_MULTIPLIER = [10000,1000,100, 10];
+BUDGET_MULTIPLIER = [1000,100, 10];
 recordPareto = false;
 timingMat = zeros(numel(BUDGET_MULTIPLIER),numel(ALGS));
 feMat = zeros(numel(BUDGET_MULTIPLIER),numel(ALGS));
@@ -26,9 +26,7 @@ for budMultIdx = 1: numel(BUDGET_MULTIPLIER)
             tic;
             % populate the algorithms of your choice here
             if strcmp(alg,'MODIRECT')
-                MODIRECT(benchmarkFunc,l' , u', numEvals, m);
-            elseif strcmp(alg,'MORANDOM')
-                MORANDOM(benchmarkFunc,l' , u', numEvals, m);
+                MODIRECT(benchmarkFunc,l' , u', numEvals, m);			
             else
                 error('no such algorithm');
             end
