@@ -23,6 +23,24 @@ To start with the *BMOBench* platform, download its code from `github`:
   * `matlab` : for running experiments in `MATLAB` 
   * `latex-template`: paper template incorporating results generated from the post-processing step.
 
+### Experiments Setup
+
+* Before you can test your algorithm, you need to run this code for once, to compile some necessary `mex` files to speed up the computation:
+1. From the MATLAB command window, `cd` to `matlab/benchmark`
+2. Execute the `setup.m` script. 
+~~~
+>>setup
+~~~
+
+### Post-Processing Setup
+
+* Before you can post-process your results, you need to run this code for once, to compile some necessary `C` libraries to speed up the post-processing computation:
+1. From the system shell, `cd` to `postprocess/scripts`
+2. Execute the `setup.py` python script. 
+~~~
+>>python setup.py
+~~~
+
 ## Running Experiments (MATLAB)
 1. Launch MATLAB and set your current path to the `matlab` directory 
 2. Put your favourite/developed algorithm under the directory `matlab/algs` directory
@@ -31,14 +49,7 @@ To start with the *BMOBench* platform, download its code from `github`:
 5. Now, you are ready to run the experiments by simply running `matlab/runBenchmark.m`. The collected results will be generated into a new directory `EXP_RESULTS`.
 
 
-## Post-Processing Setup
 
-* Before you can post-process your results, you need to run this code for once, to compile some necessary `C` libraries to speed up the post-processing computation:
-1. From the system shell, `cd` to `postprocess/scripts`
-2. Execute the `setup.py` python script. 
-~~~
->>python setup.py
-~~~
 
 
 ## Post-Processing Data
