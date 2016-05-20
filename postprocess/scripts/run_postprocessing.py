@@ -16,33 +16,28 @@ def main():
     data = []
     data.append({
         'name': "MODIRECT",
-        'algo': "MODIRECT",
+        'algo': "MO-DIRECT",
         'dir' : "../../EXP_RESULTS",
         'nRun': 1,
         'nFev': 1e3,
     })
-    data.append({
-        'name': "MORANDOM",
-        'algo': "MORANDOM",
-        'dir' : "../../EXP_RESULTS",
-        'nRun': 10,
-        'nFev': 1e2,
-    })
-	# use one or more of the following indicators: ['eps', 'gd', 'igd', 'hv']
-    indicators = ['eps','gd','igd']
+    # use one or more of the following indicators: ['eps', 'gd', 'igd', 'hv']
+    indicators = ['eps', 'gd', 'igd', 'hv']
     # ================================================================
     for ind in indicators:
         extract_ecdf.ecdf_extracting(ind = ind, isMean = False, data = data)
         plot_aggregated.main(ind = ind)
         plot_single.main(ind = ind)
     
+    # Process all the indicators/ all problems in a single plot
+    plot_aggregated.ecdf_processing_allindicators(indicators = indicators) 
     # move the aggregate data profiles to the paper template:
     NUM_RUNS = 10
     suffix = "_%druns_aggregate" % (NUM_RUNS)
     DIR_SRC = "../" + "postproc" + "/" + "figs%s" % suffix
     DIR_DST = "../" + "../" + "latex-template" + "/" + "performance-data"
     if os.path.exists(DIR_DST):
-        os.remove(DIR_DST)
+        shutil.rmtree(DIR_DST)
     shutil.move(DIR_SRC, DIR_DST)
 if __name__ == "__main__":
     startTime = time.time()

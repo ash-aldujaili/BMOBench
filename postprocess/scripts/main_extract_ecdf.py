@@ -50,7 +50,9 @@ def ecdf_extracting(ind = 'hv', isMean = True, data = []):
     NUM_RUNS = 10
     NUM_TARGETS = 70
     FILENAME_REFERENCE_SET = '%s_ref_set.prtun'
+    FILENAME_HV_REF = 'hv_reference.txt'
     FILENAME_ROI = '%s.BOUND'
+   
    
     FILENAME_PROFILE_DATABASE = 'db_runprofiles_%s.pkl' % ind
     FILENAME_ECDF_DATABASE = "db_ecdfs_%s_maxfevalDiff_%druns_%dtargets.pkl" % (ind, NUM_RUNS, NUM_TARGETS)  
@@ -85,7 +87,8 @@ def ecdf_extracting(ind = 'hv', isMean = True, data = []):
     objcol = 1
     timecol = 0
 
-    
+    # read hv reference
+    hv_ref_all_problems = np.genfromtxt(FILENAME_HV_REF) 
     #=============================================#
     #  Loop over MOPs #
     #=============================================#
@@ -113,7 +116,7 @@ def ecdf_extracting(ind = 'hv', isMean = True, data = []):
                 #obj2_instance = instance[1]
                 
                 if ind == 'hv':
-                  hv_ref = hv_ref_all_insts[24*iinst : 24*(iinst+1), :]
+                  hv_ref = hv_ref_all_problems[pidx]
                 elif ind == 'eps' or ind == 'igd' or ind == 'gd':
                   fname = FILENAME_REFERENCE_SET % (pid)
                   ref_fname = REF_TXT_DIR + "/" + fname
@@ -175,7 +178,15 @@ def ecdf_extracting(ind = 'hv', isMean = True, data = []):
                     #hv_diff = hv_ref[idx_obj1_id, idx_obj2_id] - hyperV
                     if ind == 'hv':
                       print("Computing the HV indicator")
-                      val = hv_ref[idx_obj1_id, idx_obj2_id] - buf[:,objcol+3] # more precise
+                      hvfname = "%s_%dD_%s_nfev%.1e_run%d_hv.txt" % (
+                             pid, DIM,
+                             data[ialg]['name'], data[ialg]['nFev'], irun+1)
+                      inputHVFile = data[ialg]['dir'] + "/" + hvfname
+                      hv_profile = np.genfromtxt(inputHVFile)
+                      #print len(hv_profile.shape)
+                      if len(hv_profile.shape) == 1:
+                          hv_profile = hv_profile[None,]
+                      val = hv_ref - hv_profile[:,-1]# more precise
                     elif ind == 'eps':
                       print("Computing the Epsilon indicator")
                       val = compute_fast_incr_eps(normObjVecs, ref)
@@ -186,7 +197,10 @@ def ecdf_extracting(ind = 'hv', isMean = True, data = []):
                       print("Computing the GD indicator")
                       val = compute_incr_gd(normObjVecs, ref)
                     # Take the time stamp, which is the last column
-                    timestamp = buf[:,timecol].astype(int)
+                    if ind == 'hv': # timestamp for hv depends on the hv file
+                        timestamp = hv_profile[:,0].astype(int)
+                    else:
+                        timestamp = buf[:,timecol].astype(int)
                     print("Updating the profiles")
                     #-------------------------------------------------------
                     # Store profiles (timestamp and epsilon) to a big dictionary
@@ -219,7 +233,7 @@ def ecdf_extracting(ind = 'hv', isMean = True, data = []):
                     #print("Appending a new hv-based profile")
                     # TODO address the dimension scaling with respect to each problem as LCM(DIMS) is not a suitable way (currently scaling down)
                     all_profiles[pidx][alg_id].append(            {'value'    : list(val),
-                                                                   'timestamp': list(timestamp//DIM),
+                                                                   'timestamp': list(timestamp//DIM),#'timestamp': list(np.ceil(timestamp/DIM).astype(int)),#'timestamp': list(timestamp//DIM),
                                                                    'nfevs'    : int(data[ialg]['nFev'])})
                     # elif ind == 'eps':
                     #   print("Appending a new eps-based profile")
@@ -238,13 +252,13 @@ def ecdf_extracting(ind = 'hv', isMean = True, data = []):
         except NameError:
             if ind == 'hv':
               # Make 70 targets, linearly on the log-scale from 10^-0.1 to 10^-7
-              arr = np.linspace(start=-0.1, stop=-3, num=NUM_TARGETS, endpoint=True)
+              arr = np.linspace(start=-0.8, stop=-3, num=NUM_TARGETS, endpoint=True)
               list_of_target_values = 10**arr
             elif ind == 'eps':
-              arr = np.linspace(start=-0.1, stop=-2, num=NUM_TARGETS, endpoint=True)
+              arr = np.linspace(start=-0.8, stop=-2, num=NUM_TARGETS, endpoint=True)
               list_of_target_values = 10**arr
             elif ind == 'igd' or ind == 'gd':
-              arr = np.linspace(start=-0.1, stop=-3, num=NUM_TARGETS, endpoint=True)
+              arr = np.linspace(start=-0.8, stop=-3, num=NUM_TARGETS, endpoint=True)
               list_of_target_values = 10**arr          
               
         #-------------------------------------------------------------------

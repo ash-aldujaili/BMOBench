@@ -523,8 +523,7 @@ def main(ind = 'eps'):
     
     #for idx, d in enumerate(dims):
     #  if idx % nproc == iproc:
-    ecdf_processing(ind = ind)
-    ecdf_processing_allindicators()    
+    ecdf_processing(ind = ind)   
     #MPI.COMM_WORLD.Barrier()
 
 
