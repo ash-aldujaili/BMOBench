@@ -47,9 +47,9 @@ end
 %% ======================================
 % USER CONFIGURATIONS - CHANGE HERE:
 
-ALGS = {'MODIRECT'};
-EVAL_BUDGET_MULTIPLIER = [1000];% This value * DIM will be the evaluation budget for the corresponding (problem,algorithm)
-NUM_RUNS = [1] ;% for each alg in ALGS
+ALGS = {'MORANDOM'};
+EVAL_BUDGET_MULTIPLIER = [100];% This value * DIM will be the evaluation budget for the corresponding (problem,algorithm)
+NUM_RUNS = [10] ;% for each alg in ALGS
 %% ======================================
 
 
