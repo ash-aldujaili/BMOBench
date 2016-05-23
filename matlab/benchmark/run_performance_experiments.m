@@ -23,8 +23,8 @@ for algIdx = 1 : numel(ALGS)
             benchmarkFunc = @(x) mobjfun(x, @(x) arrayfun(@(y) matampl(x,y), 1 : m), recordPareto);
             %% ======================================
             % populate the algorithms of your choice here
-            if strcmp(alg,'MODIRECT')
-                MODIRECT(benchmarkFunc,l' , u', numEvals, m);	
+            if strcmp(alg,'MORANDOM')
+                MORANDOM(benchmarkFunc,l' , u', numEvals, m);	
             else
                 error('no such algorithm');
             end
