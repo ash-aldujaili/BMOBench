@@ -23,9 +23,12 @@ def main():
     })
     # use one or more of the following indicators: ['eps', 'gd', 'igd', 'hv']
     indicators = ['eps', 'gd', 'igd', 'hv']
+    # Does your comparison include determinstic vs stochastic? if so setting the next variable to false will report the best data profile for each
+    # algorithm rather than the mean.
+    isMean = False # set to True if you want to compare the mean data profiles
     # ================================================================
     for ind in indicators:
-        extract_ecdf.ecdf_extracting(ind = ind, isMean = False, data = data)
+        extract_ecdf.ecdf_extracting(ind = ind, isMean = isMean, data = data)
         plot_aggregated.main(ind = ind)
         plot_single.main(ind = ind)
     
