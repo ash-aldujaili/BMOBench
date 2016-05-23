@@ -57,7 +57,8 @@ To start with the *BMOBench* platform, download its code from `github`:
 If you have already ran the `postprocess/scripts/setup.py`, you can generate the results as follow:
 1. From the system shell, `cd` to `postprocess/scripts`.
 
-2. Edit the `data` dictionary within the main scripting file `run_postprocessing` to incorporate the benchmarked algorithms similar to the description of the exemplar algorithm, you may choose among the available quality indicators to compare.
+2. Edit the `data` dictionary within the main scripting file `run_postprocessing` to incorporate the benchmarked algorithms similar to the description of the exemplar algorithm, you may choose among the available quality indicators to compare. 
+  * The platform also allows comparing deterministic vs stochastic algorithms by reporting the best data profiles from the multi-run (stochastic) algorithms rather than their means against the single-run data profile of the deterministic algorithm which is usually given the same evaluation budget/run times the number of runs given to the stochastic algorithms. To report the mean data profiles set `isMean` to *True*. To report the best data profiles, set it to *False*. For more details, please refer to the technical report.
 
 3. Execute the `run_postprocessing.py` python script.  
 ~~~
