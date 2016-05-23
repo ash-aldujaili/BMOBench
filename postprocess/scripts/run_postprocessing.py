@@ -15,12 +15,14 @@ def main():
     # PUT YOUR SETTINGS HERE:
     data = []
     data.append({
-        'name': "MODIRECT",
-        'algo': "MO-DIRECT",
+        'name': "MORANDOM",
+        'algo': "MORANDOM",
         'dir' : "../../EXP_RESULTS",
-        'nRun': 1,
-        'nFev': 1e3,
+        'nRun': 10,
+        'nFev': 1e2,
     })
+
+    
     # use one or more of the following indicators: ['eps', 'gd', 'igd', 'hv']
     indicators = ['eps', 'gd', 'igd', 'hv']
     # Does your comparison include determinstic vs stochastic? if so setting the next variable to false will report the best data profile for each
