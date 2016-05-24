@@ -8,7 +8,7 @@ With *BMOBench*, you can test your newly developed algorithms on 100 established
 # Requirments:
 
 * For experiments: `MATLAB`
-* For post-processing: `C` [compiler](http://mingw-w64.org/doku.php) and `Python` with the Numpy, matplotlib, and palettable packages, [Anaconda](https://www.continuum.io/downloads) is a good start.
+* For post-processing: `C` [compiler](http://mingw-w64.org/doku.php) and `Python 32-bit` with the Numpy, matplotlib, and palettable packages, [Anaconda](https://www.continuum.io/downloads) is a good start.
 
 
 # Setup
