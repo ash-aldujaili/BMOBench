@@ -86,7 +86,7 @@ If you have already ran the `postprocess/scripts/setup.py`, you can generate the
 With a LaTeX editor, the paper can be compiled directly. Note than the paper only compiles a portion of the results: *timing* and the *aggregated* performance of the algorithms over the problem categories and used quality indicators. The rest of the generated results can be found in `postprocess/postproc`.
 
 
-# Acknowledgement / Insipiration
+# Acknowledgement / Inspiration
 This platform is inspired by two solid papers from the literature:
 
 1. Custódio, Ana Luísa, et al. "**[Direct multisearch for multiobjective optimization.](http://www.mat.uc.pt/~lnv/papers/dms.pdf)**" *SIAM Journal on Optimization* 21.3 (2011): 1109-1140.
@@ -95,7 +95,7 @@ This platform is inspired by two solid papers from the literature:
 
 # Citation
 
-If you write a scientific paper describing research that made use of this code, please cite the following [paper](http://arxiv.org/abs/1605.07009):
+If you write a scientific paper describing research that made use of this code, please cite the following [report](http://arxiv.org/abs/1605.07009):
 
 ~~~
 @article{bmobench-16,
