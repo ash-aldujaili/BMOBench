@@ -12,7 +12,7 @@
 /*
  Recorder
 */
-#define IGNORE_DECISION_VARIABLES
+// #define IGNORE_DECISION_VARIABLES
 //#define WRITE_WITH_MINIMAL_SPACING
 
 
