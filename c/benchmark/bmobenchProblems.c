@@ -1064,8 +1064,6 @@ void p18(double* f, double* x){
   double *y;
   double ff1, gx, h;
 
-  double pi = 4*atan(1);
-
   FILE *myFile;
   int i, j;
   double **M = (double **)malloc(sizeof(double*)*m);
