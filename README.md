@@ -93,13 +93,7 @@ This platform is inspired by two solid papers from the literature:
 
 2. Brockhoff, Dimo, Thanh-Do Tran, and Nikolaus Hansen. "**[Benchmarking numerical multiobjective optimizers revisited.](https://hal.inria.fr/hal-01146741/document)**" *Genetic and Evolutionary Computation Conference (GECCO 2015)*. 2015.
 
-*Thanks* extended to:
-1. Bhavarth Pandya
-2. Chaitanya Prasad
-3. Khyati Mahajan
-4. Shaleen Gupta
-
-They contributed greatly to the core of the `C` platform and verified the correctness of the `C`-coded problems to their `AMPL` counterpart.
+*Thanks* extended to /Bhavarth Pandya, Chaitanya Prasad, Khyati Mahajan, andShaleen Gupta/. They contributed greatly to the core of the `C` platform and verified the correctness of the `C`-coded problems to their `AMPL` counterpart.
 
 # Citation
 
