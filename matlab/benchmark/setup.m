@@ -14,5 +14,9 @@ fprintf('compiling Hypervolume.cpp...');
 mex -I. hv.cpp Hypervolume.cpp
 fprintf('Done\n');
 
+fprintf('compiling matc.c...');
+mex -I. matc.c problems.c
+fprintf('Done\n');
+
 fprintf('===========================\n');
 
