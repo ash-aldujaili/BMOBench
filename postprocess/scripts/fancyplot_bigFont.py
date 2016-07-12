@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+# Adapted From MOBBOB-GECCO, Brockhoff, Dimo, Thanh-Do Tran, and Nikolaus Hansen. "Benchmarking numerical multiobjective optimizers revisited." Proceedings of the 2015 Annual Conference on Genetic and Evolutionary Computation. ACM, 2015.*/
 
 from __future__ import division
 import palettable as brewer2mpl  # for colors, see: Documentation @ https://github.com/jiffyclub/brewer2mpl/wiki

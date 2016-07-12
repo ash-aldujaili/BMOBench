@@ -1,4 +1,4 @@
-/*From MOBBOB-GECCO, DIMO ET AL 2015*/
+/*From MOBBOB-GECCO, Brockhoff, Dimo, Thanh-Do Tran, and Nikolaus Hansen. "Benchmarking numerical multiobjective optimizers revisited." Proceedings of the 2015 Annual Conference on Genetic and Evolutionary Computation. ACM, 2015.*/
 
 #include <stdio.h>
 #include <stdlib.h>

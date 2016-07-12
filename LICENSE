@@ -1,5 +1,17 @@
 Copyright (c) 2016, Abdullah Al-Dujaili
-All rights reserved.
+All rights reserved except for the following files which were taken/adapted/built on from the GECCO 2015 code (http://coco.gforge.inria.fr/doku.php?id=mo-gecco2015) by Dimo Brockhoff, Thanh-Do Tran and Nikolaus Hansen as follows.
+* postprocess/scripts/bbobbenchmarks.py
+* postprocess/scripts/readformatedtxt.py
+* postprocess/scripts/texify.py
+* postprocess/scripts/wrapbbob.py
+* postprocess/scripts/eps.py 
+* c/benchmark/checkDominance.c
+* postprocess/scripts/fancyplot_bigFont.py (slight changes)
+* postprocess/scripts/main_plot_aggregated_ecdf.py (slight changes)
+* postprocess/scripts/main_plot_single_ecdf.py (slight changes)
+* postprocess/scripts/ecdf.py (built-upon similar functionality in GECCO 2015)
+* postprocess/scripts/main_extract_ecdf.py (built-upon similar functionality in GECCO 2015)
+* c/benchmark/recorder.c (built-upon similar functionality in GECCO 2015)
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -25,3 +37,20 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Acknowledgement:
+
+1. A. L. Custódio, J. F. A. Madeira, A. I. F. Vaz, and L. N. Vicente. "**[Direct multisearch for multiobjective optimization.](http://www.mat.uc.pt/~lnv/papers/dms.pdf)**" *SIAM Journal on Optimization* 21.3 (2011): 1109-1140.
+
+2. D. Brockhoff, T.D. Tran, and N. Hansen. "**[Benchmarking numerical multiobjective optimizers revisited.](https://hal.inria.fr/hal-01146741/document)**" *Genetic and Evolutionary Computation Conference (GECCO 2015)*. 2015.
+
+3. D. Brockhoff, T. Tušar, D. Tušar, T. Wagner, N. Hansen, A. Auger, (2016). Biobjective Performance Assessment with the COCO Platform. ArXiv e-prints, arXiv:1605.01746.
+
+4. N. Hansen, A. Auger, O. Mersmann, T. Tušar, D. Brockhoff (2016). COCO: A Platform for Comparing Continuous Optimizers in a Black-Box Setting, ArXiv e-prints, arXiv:1603.08785
+
+5. N. Hansen, A. Auger, D. Brockhoff, D. Tušar, T. Tušar. COCO: Performance Assessment. ArXiv e-prints, arXiv:1605.03560, 2016.
+
+6. N. Hansen, T. Tušar, A. Auger, D. Brockhoff, O. Mersmann (2016). COCO: The Experimental Procedure, ArXiv e-prints, arXiv:1603.08776.
+      
+7. T. Tušar, D. Brockhoff, N. Hansen, A. Auger (2016). COCO: The Bi-objective Black Box Optimization Benchmarking (bbob-biobj) Test Suite, ArXiv e-prints, arXiv:1604.00359.         
+

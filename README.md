@@ -87,11 +87,22 @@ With a LaTeX editor, the paper can be compiled directly. Note than the paper onl
 
 
 # Acknowledgement / Inspiration
-This platform is inspired by two solid papers from the literature:
+This platform is inspired by the following:
 
-1. Custódio, Ana Luísa, et al. "**[Direct multisearch for multiobjective optimization.](http://www.mat.uc.pt/~lnv/papers/dms.pdf)**" *SIAM Journal on Optimization* 21.3 (2011): 1109-1140.
+1. A. L. Custódio, J. F. A. Madeira, A. I. F. Vaz, and L. N. Vicente. "**[Direct multisearch for multiobjective optimization.](http://www.mat.uc.pt/~lnv/papers/dms.pdf)**" *SIAM Journal on Optimization* 21.3 (2011): 1109-1140.
 
-2. Brockhoff, Dimo, Thanh-Do Tran, and Nikolaus Hansen. "**[Benchmarking numerical multiobjective optimizers revisited.](https://hal.inria.fr/hal-01146741/document)**" *Genetic and Evolutionary Computation Conference (GECCO 2015)*. 2015.
+2. D. Brockhoff, T.D. Tran, and N. Hansen. "**[Benchmarking numerical multiobjective optimizers revisited.](https://hal.inria.fr/hal-01146741/document)**" *Genetic and Evolutionary Computation Conference (GECCO 2015)*. 2015.
+
+3. D. Brockhoff, T. Tušar, D. Tušar, T. Wagner, N. Hansen, A. Auger, (2016). Biobjective Performance Assessment with the COCO Platform. ArXiv e-prints, arXiv:1605.01746.
+
+4. N. Hansen, A. Auger, O. Mersmann, T. Tušar, D. Brockhoff (2016). COCO: A Platform for Comparing Continuous Optimizers in a Black-Box Setting, ArXiv e-prints, arXiv:1603.08785
+
+5. N. Hansen, A. Auger, D. Brockhoff, D. Tušar, T. Tušar. COCO: Performance Assessment. ArXiv e-prints, arXiv:1605.03560, 2016.
+
+6. N. Hansen, T. Tušar, A. Auger, D. Brockhoff, O. Mersmann (2016). COCO: The Experimental Procedure, ArXiv e-prints, arXiv:1603.08776.
+      
+7. T. Tušar, D. Brockhoff, N. Hansen, A. Auger (2016). COCO: The Bi-objective Black Box Optimization Benchmarking (bbob-biobj) Test Suite, ArXiv e-prints, arXiv:1604.00359.         
+
 
 **Thanks** extended to *[Bhavarth Pandya](https://github.com/bhavarthpandya), [Chaitanya Prasad](https://github.com/chaitanya94), [Khyati Mahajan](https://github.com/khyatimahajan), and [Shaleen Gupta](https://github.com/shaleenx)*. They contributed greatly to the core of the `C` platform and verified the correctness of the `C`-coded problems to their `AMPL` counterpart.
 
